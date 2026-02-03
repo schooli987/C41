@@ -6,6 +6,8 @@ from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from kivymd.uix.dialog import MDDialog
 
+API_KEY ="d0730148-3e9a-419f-80a2-ec1aa0077949"
+
 class PlanetInfoApp(MDApp):
     def build(self):
         self.theme_cls.primary_palette = "Indigo"
@@ -38,8 +40,12 @@ class PlanetInfoApp(MDApp):
             return
 
         url = f"https://api.le-systeme-solaire.net/rest.php/bodies/{planet}"
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Accept": "application/json"
+        }
         try:
-            response = requests.get(url)
+            response = requests.get(url,headers=headers, timeout=10)
             if response.status_code == 200:
                 data = response.json()
                 gravity = data.get('gravity', 'N/A')
@@ -64,3 +70,4 @@ class PlanetInfoApp(MDApp):
 
 if __name__ == "__main__":
     PlanetInfoApp().run()
+
